@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private TextDetector textDetector;
     private Bitmap bitmap = null;
     private TextView title;
+    Uri imageUri = null;
     GraphicOverlay mGraphicOverlay;
 
     @Override
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         textDetector  = new TextDetector(this);
         objectDetector = new ObjectDetector(this);
         gallery = findViewById(R.id.gallery);
-        mGraphicOverlay = findViewById(R.id.graphic_overlay);
         bottomNavigationMenu = findViewById(R.id.bottom_navigation);
 
 
@@ -150,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (requestCode == GALLERY_REQUEST) {
 
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
+            setImageUri(imageUri);
             mainImage.setImageURI(imageUri);
             try {
 
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 setBitmap(bitmap1);
 
                 if (isText) {
-                    textDetector.processText(getBitmap(),grid, mGraphicOverlay);
+                    textDetector.processText(getBitmap(),grid, mainImage);
                 } else {
                     labelDetector.detectLabels(getBitmap(), grid);
                 }
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             mainImage.setImageBitmap(getBitmap());
             try {
                 if (isText) {
-                    textDetector.processText(getBitmap(),grid,mGraphicOverlay);
+                    textDetector.processText(getBitmap(),grid,mainImage);
                 } else {
                     labelDetector.detectLabels(getBitmap(), grid);
                 }
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                             isText = true;
                             try {
                                 title.setText(R.string.titleText);
-                                textDetector.processText(getBitmap(), grid, mGraphicOverlay);
+                                textDetector.processText(getBitmap(), grid, mainImage);
 
 
                             } catch (Exception e) {
@@ -235,7 +236,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.AnlyzeImage:
-                            objectDetector.detectObjects(getBitmap());
+                            //TODO add imageview as param
+                            objectDetector.detectObjects(getBitmap(), mainImage);
                             title.setText(R.string.titleObject);
                             break;
                     }
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
-
+//Getters and Settes
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
@@ -251,4 +253,8 @@ public class MainActivity extends AppCompatActivity {
     public Bitmap getBitmap() {
         return bitmap;
     }
+
+    public void setImageUri(Uri imageUri){ this.imageUri = imageUri;}
+    public  Uri getUri(){return imageUri;}
 }
+
