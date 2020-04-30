@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -19,6 +20,7 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObject;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetector;
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions;
 
 import java.util.List;
 
@@ -43,17 +45,28 @@ public class ObjectDetector {
     protected void detectObjects(final Bitmap bitmap, final ImageView imageView) {
 
         final FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
-        FirebaseVisionObjectDetector detector = FirebaseVision.getInstance().getOnDeviceObjectDetector();
+        FirebaseVisionObjectDetectorOptions options =
+                new FirebaseVisionObjectDetectorOptions.Builder()
+                        .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                        .enableMultipleObjects()
+                        .enableClassification()  // Optional
+                        .build();
+        FirebaseVisionObjectDetector detector = FirebaseVision.getInstance().getOnDeviceObjectDetector(options);
         detector.processImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionObject>>() {
 
             @Override
             public void onSuccess(List<FirebaseVisionObject> detectedObjects) {
+                Paint textPaint = new Paint();
+                int scaledSize = mContext.getResources().getDimensionPixelSize(R.dimen.classFont);
 
+                textPaint.setStyle(Paint.Style.FILL);
+                textPaint.setTextSize(scaledSize);
+                textPaint.setColor(Color.WHITE);
                 Paint p = new Paint();
                 p.setStyle(Paint.Style.STROKE);
                 p.setColor(Color.RED);
-                p.setStrokeWidth(3);
-                int scaledSize = mContext.getResources().getDimensionPixelSize(R.dimen.classFont);
+                p.setStrokeWidth(8);
+
                 p.setTextSize(scaledSize);
 
                 Bitmap bmp_Copy = bitmap.copy(Bitmap.Config.ARGB_8888,true);
@@ -62,14 +75,17 @@ public class ObjectDetector {
                 for (int i = 0; i <detectedObjects.size();i++) {
                     Integer id = detectedObjects.get(i).getTrackingId();
                     Rect bounds = detectedObjects.get(i).getBoundingBox();
+                    int category = detectedObjects.get(i).getClassificationCategory();
                     canvas.drawRect(bounds,p);
+
+
                     switch(detectedObjects.get(i).getClassificationCategory()){
-                        case 0: canvas.drawText("UNKNOWN" + detectedObjects.size(), bounds.right,bounds.bottom,p);break;
-                        case 1: canvas.drawText("HOME_GOOD", bounds.right,bounds.bottom,p);break;
-                        case 2: canvas.drawText("FASHION_GOOD", bounds.right,bounds.bottom,p);break;
-                        case 3: canvas.drawText("FOOD", bounds.right,bounds.bottom,p);break;
-                        case 4: canvas.drawText("PLACE", bounds.right,bounds.bottom,p);break;
-                        case 5: canvas.drawText("PLANT", bounds.right,bounds.bottom,p);break;
+                        case 0: canvas.drawText("UNKNOWN", bounds.right,bounds.bottom,textPaint);break;
+                        case 1: canvas.drawText("HOME_GOOD", bounds.right,bounds.bottom,textPaint);break;
+                        case 2: canvas.drawText("FASHION_GOOD", bounds.right,bounds.bottom,textPaint);break;
+                        case 3: canvas.drawText("FOOD", bounds.right,bounds.bottom,textPaint);break;
+                        case 4: canvas.drawText("PLACE", bounds.right,bounds.bottom,textPaint);break;
+                        case 5: canvas.drawText("PLANT", bounds.right,bounds.bottom,textPaint);break;
                     }
                 }
                 imageView.setImageBitmap(bmp_Copy);
