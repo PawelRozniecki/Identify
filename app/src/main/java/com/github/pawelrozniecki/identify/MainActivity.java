@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap = null;
     private TextView title;
     Uri imageUri = null;
-    GraphicOverlay mGraphicOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
