@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Identify</string>
+    <string name="titleObject">Object Detection</string>
+    <string name="titleLabel">Label Detection</string>
+    <string name="titleText">Text Detection</string>
+
+
+</resources>

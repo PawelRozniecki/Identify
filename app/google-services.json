@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "987385670000",
+    "firebase_url": "https://identify-81911.firebaseio.com",
+    "project_id": "identify-81911",
+    "storage_bucket": "identify-81911.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987385670000:android:66af92df4d4bf346c447b5",
+        "android_client_info": {
+          "package_name": "com.github.pawelrozniecki.identify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987385670000-ct6b2af56bjgdnl0lne1kvlu9282unfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw01lpThXPKVMPDwZrnz4u843LHW43nMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987385670000-ct6b2af56bjgdnl0lne1kvlu9282unfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
