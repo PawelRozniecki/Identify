@@ -156,16 +156,9 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                Bitmap.Config bitmapConfig =
-                        bitmap.getConfig();
-                // set default bitmap config if none
-                if(bitmapConfig == null) {
-                    bitmapConfig = Bitmap.Config.ARGB_8888;
-                }
+                setBitmap(bitmap);
 
-                Bitmap bitmap1 = bitmap.copy(bitmapConfig, true);
 
-                setBitmap(bitmap1);
 
                 if (isText) {
                     textDetector.processText(getBitmap(),grid, mainImage);
@@ -236,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.AnlyzeImage:
-                            //TODO add imageview as param
+
                             objectDetector.detectObjects(getBitmap(), mainImage);
                             title.setText(R.string.titleObject);
                             break;
